@@ -1,0 +1,76 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+' ================= USERS =================
+
+abstract class User {
+  +id: int
+  +username: String
+  +password: String
+  +login(): boolean
+}
+
+class Admin {
+  +manageUsers()
+  +generateReports()
+}
+
+class Operator {
+  +registerVehicle()
+  +registerEntry()
+  +registerExit()
+  +searchVehicle()
+}
+
+User <|-- Admin
+User <|-- Operator
+
+' ================= DRIVER & VEHICLE =================
+
+class Driver {
+  +driverId: int
+  +name: String
+  +phone: String
+}
+
+class Vehicle {
+  +plateNumber: String
+  +model: String
+  +color: String
+  +status: String
+}
+
+Driver "1" -- "many" Vehicle
+
+' ================= PARKING =================
+
+class ParkingSlot {
+  +slotId: int
+  +isAvailable: boolean
+}
+
+class ParkingTransaction {
+  +entryTime: datetime
+  +exitTime: datetime
+  +fee: float
+  +calculateFee()
+}
+
+Vehicle "1" -- "many" ParkingTransaction
+ParkingSlot "1" -- "many" ParkingTransaction
+
+' ================= SYSTEM =================
+
+class ParkingSystem {
+  +checkCapacity()
+  +assignSlot()
+  +releaseSlot()
+  +calculateFee()
+}
+
+ParkingSystem o-- ParkingSlot
+ParkingSystem o-- Vehicle
+ParkingSystem o-- ParkingTransaction
+
+@enduml
